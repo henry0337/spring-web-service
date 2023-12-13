@@ -2,12 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -38,11 +38,11 @@ public class UserController {
 
 
     @PostMapping(
-            consumes = MediaType.ALL_VALUE,
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> store(
-            @Valid @RequestBody User user,
+            @Validated @RequestBody User user,
             BindingResult result
     ) {
         if (result.hasErrors()) {
@@ -56,12 +56,12 @@ public class UserController {
 
     @PutMapping(
             value = "/{id}",
-            consumes = MediaType.ALL_VALUE,
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> update(
             @PathVariable Long id,
-            @Valid @RequestBody User user,
+            @Validated @RequestBody User user,
             BindingResult result
     ) {
         if (result.hasErrors()) {

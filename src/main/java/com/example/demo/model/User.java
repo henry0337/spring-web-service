@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
 
@@ -32,7 +33,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    @Min(value = 8, message = "Độ dài mật khẩu tối thiểu là 8 kí tự.")
+    @Length(min = 8, message = "Độ dài mật khẩu tối thiểu là 8 kí tự.")
     private String password;
 
     @Column(columnDefinition = "smallint default 1")
