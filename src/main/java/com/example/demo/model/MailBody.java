@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class MailStructure {
+public class MailBody {
     private String subject;
     private String message;
     private Date sentDate = new Date(System.currentTimeMillis());

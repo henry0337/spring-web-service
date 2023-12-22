@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -31,16 +29,13 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.findByUsername(username));
     }
 
 
-    @PostMapping(
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> store(
             @Validated @RequestBody User user,
             BindingResult result
@@ -54,13 +49,9 @@ public class UserController {
         return new ResponseEntity<>(userService.insert(user), HttpStatus.CREATED);
     }
 
-    @PutMapping(
-            value = "/{id}",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PutMapping(value = "/{username}", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(
-            @PathVariable Long id,
+            @PathVariable String username,
             @Validated @RequestBody User user,
             BindingResult result
     ) {
@@ -70,12 +61,12 @@ public class UserController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        return new ResponseEntity<>(userService.update(user, id), HttpStatus.OK);
+        return ResponseEntity.ok(userService.update(user, username));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        userService.delete(id);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> delete(@PathVariable String username) {
+        userService.delete(username);
         return ResponseEntity.noContent().build();
     }
 }

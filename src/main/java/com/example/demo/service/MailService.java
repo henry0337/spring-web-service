@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.MailStructure;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.model.MailBody;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,12 +13,11 @@ public class MailService {
     @Value("${spring.mail.username}")
     private String fromMail;
 
-    @Autowired
     public MailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    public void sendMail(String targetMail, MailStructure body) {
+    public void sendMail(String targetMail, MailBody body) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(fromMail);
         mailMessage.setTo(targetMail);
