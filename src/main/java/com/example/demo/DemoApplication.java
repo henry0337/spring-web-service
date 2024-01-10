@@ -1,15 +1,17 @@
 package com.example.demo;
 
-import com.example.demo.model.Role;
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.models.Role;
+import com.example.demo.models.User;
+import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
+@ConfigurationPropertiesScan("com.example.demo.utilities.properties")
 public class DemoApplication implements CommandLineRunner {
 
     @Autowired

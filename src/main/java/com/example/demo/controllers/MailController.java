@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
-import com.example.demo.model.MailBody;
-import com.example.demo.service.MailService;
+import com.example.demo.models.MailBody;
+import com.example.demo.services.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

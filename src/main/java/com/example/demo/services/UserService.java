@@ -1,12 +1,13 @@
-package com.example.demo.service;
+package com.example.demo.services;
 
-import com.example.demo.model.Role;
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.models.Role;
+import com.example.demo.models.User;
+import com.example.demo.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,8 +29,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByEmail(String name) {
-        Optional<User> user = userRepository.findByEmail(name);
+    public User findByName(String name) {
+        Optional<User> user = userRepository.findByName(name);
         return user.orElseThrow(() -> new EntityNotFoundException("Không có bản ghi nào thuộc về bản ghi có tên người dùng là " + name + " này!"));
     }
 
@@ -38,6 +39,7 @@ public class UserService {
             String imagePath = saveImage(imageFile);
             user.setImage(imagePath);
         }
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setRole(Role.USER);
         return userRepository.save(user);
     }
@@ -58,12 +60,14 @@ public class UserService {
     }
 
     public User update(User user, String name, MultipartFile imageFile) throws IOException {
-        Optional<User> currentUser = userRepository.findByEmail(name);
+        Optional<User> currentUser = userRepository.findByName(name);
+
         if (currentUser.isPresent()) {
             User newUser = currentUser.get();
+
             newUser.setName(user.getName());
             newUser.setEmail(user.getUsername());
-            newUser.setPassword(user.getPassword());
+            newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             newUser.setStatus(user.getStatus());
             if (imageFile != null && !imageFile.isEmpty()) {
                 String imagePath = saveImage(imageFile);
@@ -72,17 +76,17 @@ public class UserService {
 
             return userRepository.save(newUser);
         } else {
-            throw new EntityNotFoundException("Không tìm thấy người dùng có tên là " + name + " để cập nhật!");
+            throw new EntityNotFoundException("Can't find any user with this username!");
         }
     }
 
     public void delete(String username) {
-        userRepository.deleteByEmail(username);
+        userRepository.deleteByName(username);
     }
 
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username).orElseThrow(
-                () -> new UsernameNotFoundException("Can't find any user associated to this username!")
+                () -> new UsernameNotFoundException("Can't find any user with this username!")
         );
     }
 }

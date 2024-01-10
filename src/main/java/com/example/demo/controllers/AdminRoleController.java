@@ -1,20 +1,20 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/api/v1/user")
+@RestController
+@RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-public class UserRoleController {
+public class AdminRoleController {
 
     @GetMapping
     public ResponseEntity<String> greeting() {
-        return ResponseEntity.ok("Welcome to user page!");
+        return ResponseEntity.ok("Welcome to admin page!");
     }
 }

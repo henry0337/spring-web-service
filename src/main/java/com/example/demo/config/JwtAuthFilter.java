@@ -1,7 +1,7 @@
 package com.example.demo.config;
 
-import com.example.demo.service.JwtService;
-import com.example.demo.service.UserService;
+import com.example.demo.services.JwtService;
+import com.example.demo.services.UserService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

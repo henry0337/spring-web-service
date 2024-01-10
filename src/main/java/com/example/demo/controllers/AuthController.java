@@ -1,11 +1,11 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import com.example.demo.dto.JwtAuthResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RefreshTokenRequest;
 import com.example.demo.dto.RegisterRequest;
-import com.example.demo.model.User;
-import com.example.demo.service.AuthService;
+import com.example.demo.models.User;
+import com.example.demo.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,10 +1,11 @@
-package com.example.demo.service;
+package com.example.demo.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,20 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+    @Value("${jwt.token.raw-content}")
+    private String token;
+
+    @Value("${jwt.token.token-lifetime}")
+    private long tokenLifetime;
+
+    @Value("${jwt.token.refreshLifetime}")
+    private long refreshTokenLifetime;
+
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // // Approximately 1 day (?)
+                .setExpiration(new Date(System.currentTimeMillis() + tokenLifetime))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -43,10 +53,9 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] key = Decoders.BASE64.decode("37405a74de628d7d66e7af2ce4aea13076b382685498876bca5e76cb4a8a73f4");
+        byte[] key = Decoders.BASE64.decode(token);
         return Keys.hmacShaKeyFor(key);
     }
-
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
@@ -62,7 +71,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 604800000)) // Approximately a week (?)
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenLifetime))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

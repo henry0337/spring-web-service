@@ -1,6 +1,6 @@
-package com.example.demo.service;
+package com.example.demo.services;
 
-import com.example.demo.model.MailBody;
+import com.example.demo.models.MailBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,6 +18,7 @@ public class MailService {
 
     public void sendMail(String targetMail, MailBody body) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
+
         mailMessage.setFrom(fromMail);
         mailMessage.setTo(targetMail);
         mailMessage.setSubject(body.getSubject());

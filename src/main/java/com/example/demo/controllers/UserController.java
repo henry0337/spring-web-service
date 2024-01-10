@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
-import com.example.demo.model.User;
-import com.example.demo.service.UserService;
+import com.example.demo.models.User;
+import com.example.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,11 +31,13 @@ public class UserController {
 
     @GetMapping("/{username}")
     public ResponseEntity<User> getByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(userService.findByEmail(username));
+        return ResponseEntity.ok(userService.findByName(username));
     }
 
-
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<?> store(
             @Validated @ModelAttribute User user,
             @RequestParam("imageFile") MultipartFile imageFile,
@@ -50,11 +52,15 @@ public class UserController {
         return new ResponseEntity<>(userService.insert(user, imageFile), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{username}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(
+            value = "/{username}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<?> update(
             @PathVariable String username,
-            @RequestParam("imageFile") MultipartFile imageFile,
             @Validated @ModelAttribute User user,
+            @RequestParam("imageFile") MultipartFile imageFile,
             BindingResult result
     ) throws IOException {
         if (result.hasErrors()) {
