@@ -56,7 +56,7 @@ public class UserService {
         Path filePath = Paths.get(uploadDir, fileName);
         Files.write(filePath, imageFile.getBytes());
 
-        return "/img/" + fileName;
+        return fileName;
     }
 
     public User update(User user, String name, MultipartFile imageFile) throws IOException {

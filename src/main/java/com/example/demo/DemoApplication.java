@@ -28,16 +28,16 @@ public class DemoApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        User adminAccount = userRepository.findByRole(Role.ADMIN);
-
-        if (adminAccount == null) {
-            User user = new User();
-            user.setName("Administrator");
-            user.setEmail("admin@email.com");
-            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
-            user.setRole(Role.ADMIN);
-
-            userRepository.save(user);
-        }
+//        User adminAccount = userRepository.findByRole(Role.ADMIN);
+//
+//        if (adminAccount == null) {
+//            User user = new User();
+//            user.setName("Administrator");
+//            user.setEmail("admin@email.com");
+//            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
+//            user.setRole(Role.ADMIN);
+//
+//            userRepository.save(user);
+//        }
     }
 }

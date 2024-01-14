@@ -4,7 +4,6 @@ import com.example.demo.models.User;
 import com.example.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
@@ -26,17 +28,19 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<User>> getAll() {
+        if (userService.findAll().isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<User> getByUsername(@PathVariable String username) {
+        if (userService.findByName(username) == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.findByName(username));
     }
 
     @PostMapping(
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE},
+            produces = APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> store(
             @Validated @ModelAttribute User user,
@@ -54,8 +58,8 @@ public class UserController {
 
     @PutMapping(
             value = "/{username}",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE},
+            produces = APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> update(
             @PathVariable String username,
@@ -74,8 +78,9 @@ public class UserController {
 
     @DeleteMapping("/{username}")
     public ResponseEntity<Void> delete(@PathVariable String username) {
+        if (userService.findByName(username) == null)
+            return ResponseEntity.notFound().build();
         userService.delete(username);
         return ResponseEntity.noContent().build();
     }
 }
-

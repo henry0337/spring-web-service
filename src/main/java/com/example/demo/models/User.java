@@ -43,8 +43,8 @@ public class User implements UserDetails {
 
     @Getter
     @Column(columnDefinition = "smallint default 1")
-    @Min(value = 0, message = "Must be equal or higher than 1")
-    @Max(value = 1, message = "Must be equal or lower than 1")
+    @Min(value = 0, message = "Must be equal or higher than 1!")
+    @Max(value = 1, message = "Must be equal or lower than 1!")
     private Short status = 1;
 
     @Column(name = "avatar")
@@ -69,6 +69,7 @@ public class User implements UserDetails {
      *
      * @return the authorities, sorted by natural key (never <code>null</code>)
      */
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
