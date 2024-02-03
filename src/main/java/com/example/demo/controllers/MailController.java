@@ -11,6 +11,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/mail")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MailController {
 
     private final MailService mailService;

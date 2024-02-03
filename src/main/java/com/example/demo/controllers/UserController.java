@@ -3,7 +3,6 @@ package com.example.demo.controllers;
 import com.example.demo.models.User;
 import com.example.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -53,7 +53,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        return new ResponseEntity<>(userService.insert(user, imageFile), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.insert(user, imageFile), CREATED);
     }
 
     @PutMapping(
@@ -78,8 +78,7 @@ public class UserController {
 
     @DeleteMapping("/{username}")
     public ResponseEntity<Void> delete(@PathVariable String username) {
-        if (userService.findByName(username) == null)
-            return ResponseEntity.notFound().build();
+        if (userService.findByName(username) == null) return ResponseEntity.notFound().build();
         userService.delete(username);
         return ResponseEntity.noContent().build();
     }

@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.conf;
 
 import com.example.demo.services.JwtService;
 import com.example.demo.services.UserService;

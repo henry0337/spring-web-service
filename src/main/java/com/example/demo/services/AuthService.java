@@ -4,9 +4,8 @@ import com.example.demo.dto.JwtAuthResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RefreshTokenRequest;
 import com.example.demo.dto.RegisterRequest;
-import com.example.demo.models.Role;
 import com.example.demo.models.User;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+
+import static com.example.demo.models.Role.USER;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class AuthService {
         user.setName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPassword(encoder.encode(request.getPassword()));
-        user.setRole(Role.USER);
+        user.setRole(USER);
 
         return userRepository.save(user);
     }

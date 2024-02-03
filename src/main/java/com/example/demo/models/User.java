@@ -14,10 +14,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static jakarta.persistence.TemporalType.TIMESTAMP;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,14 +54,14 @@ public class User implements UserDetails {
     private String image;
 
     @Getter
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TIMESTAMP)
     @Column(name = "created_at", updatable = false, columnDefinition = "timestamp default current_timestamp(1)")
-    private Date createdAt = new Date();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Getter
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TIMESTAMP)
     @Column(name = "updated_at", insertable = false, columnDefinition = "timestamp default current_timestamp(1)")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @Getter
     private Role role;
@@ -140,9 +142,8 @@ public class User implements UserDetails {
      *
      * @return <code>true</code> if the user is enabled, <code>false</code> otherwise
      */
-    @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.getStatus() == 1;
     }
 }

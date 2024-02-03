@@ -1,8 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Role;
 import com.example.demo.models.User;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +17,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.example.demo.models.Role.USER;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class UserService {
             user.setImage(imagePath);
         }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRole(Role.USER);
+        user.setRole(USER);
         return userRepository.save(user);
     }
 
